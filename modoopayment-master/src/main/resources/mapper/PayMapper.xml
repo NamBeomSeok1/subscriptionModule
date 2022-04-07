@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="modoo.ext.module.payment.dao">
+
+	<resultMap id="paymentResultMap" type="modoo.ext.module.payment.vo.ModooPayVO">
+		<result column="ORDER_SETLE_NO" property="ORDER_SETLE_NO" />
+		<result column="SETLE_TOT_AMOUNT" property="SETLE_TOT_AMOUNT" />
+		<result column="SETLE_POINT" property="SETLE_POINT" />
+		<result column="SETLE_CARD_AMOUNT" property="SETLE_CARD_AMOUNT" />
+		<result column="SETLE_TY_CODE" property="SETLE_TY_CODE" />
+		<result column="SETLE_STTUS_CODE" property="SETLE_STTUS_CODE" />
+		<result column="SETLE_RESULT_CODE" property="SETLE_RESULT_CODE" />
+		<result column="SETLE_RESULT_MSSAGE" property="SETLE_RESULT_MSSAGE" />
+		<result column="EZW_SETLE_CONFM_NO" property="EZW_SETLE_CONFM_NO" />
+		<result column="INI_SETLE_CONFM_NO" property="INI_SETLE_CONFM_NO" />
+		<result column="SPTM_PNTTM_STR" property="SPTM_PNTTM_STR" />
+		<result column="SETLE_FAIL_CNT" property="SETLE_FAIL_CNT" />
+		<result column="TEMP_KEY" property="TEMP_KEY" />
+
+		<result column="HDRY_DLVY_DE" property="HDRY_DLVY_DE" />
+		<result column="ORDER_ODR" property="ORDER_ODR" />
+		<result column="DLVY_ZIP" property="DLVY_ZIP" />
+		<result column="DLVY_ADRES" property="DLVY_ADRES" />
+		<result column="DLVY_ADRES_DETAIL" property="DLVY_ADRES_DETAIL" />
+		<result column="ORDER_REQ_STTUS_CODE" property="ORDER_REQ_STTUS_CODE" />
+		<result column="SLE_AMOUNT" property="SLE_AMOUNT" />
+		<result column="DSCNT_AMOUNT" property="DSCNT_AMOUNT" />
+		<result column="ORDER_INFO" property="ORDER_INFO" />
+		<result column="REQ_TY_CODE" property="REQ_TY_CODE" />
+		<result column="SBSCRPT_DLVY_DAY" property="SBSCRPT_DLVY_DAY" />
+
+		<!-- <result column="DLVY_TELNO" property="DLVY_TELNO" />	 -->
+
+		<result column="ORDER_NO" property="ORDER_NO" />
+		<result column="ORDER_GROUP_NO" property="ORDER_GROUP_NO" />
+		<result column="ORDRR_ID" property="ORDRR_ID" />
+		<result column="ORDRR_NM" property="ORDRR_NM" />
+		<result column="GOODS_ID" property="GOODS_ID" />
+		<result column="GOODS_AMOUNT" property="GOODS_AMOUNT" />
+		<result column="TOT_AMOUNT" property="TOT_AMOUNT" />
+		<result column="NOW_ODR" property="NOW_ODR" />
+		<result column="ORDER_KND_CODE" property="ORDER_KND_CODE" />
+		<result column="SBSCRPT_CYCLE_SE_CODE" property="SBSCRPT_CYCLE_SE_CODE" />
+		<result column="SBSCRPT_WEEK_CYCLE" property="SBSCRPT_WEEK_CYCLE" />
+		<result column="SBSCRPT_MT_CYCLE" property="SBSCRPT_MT_CYCLE" />
+		<!-- <result column="ORDRR_TELNO" property="ORDRR_TELNO" /> -->
+		<!-- <result column="ORDRR_MOBINO" property="ORDRR_MOBINO" /> -->
+		<result column="ORDRR_EMAIL" property="ORDRR_EMAIL" />
+		<result column="DLVY_USER_NM" property="DLVY_USER_NM" />
+		<result column="DLVY_TELNO" property="DLVY_TELNO" />
+		<!-- <result column="DLVY_CELNO" property="DLVY_CELNO" /> -->
+		<result column="ORDER_REQUEST" property="ORDER_REQUEST" />
+		<result column="POINT_YN" property="POINT_YN" />
+		<result column="EZMIL_YN" property="EZMIL_YN" />
+		<result column="SPECIAL_USE_YN" property="SPECIAL_USE_YN" />
+		<result column="RECEIPT_YN" property="RECEIPT_YN" />
+		<result column="USER_KEY" property="USER_KEY" />
+		<result column="CLIENT_CD" property="CLIENT_CD" />
+		<result column="BILL_KEY" property="BILL_KEY" />
+		<result column="ORDER_CO" property="ORDER_CO" />
+		<result column="ORDER_STTUS_CODE" property="ORDER_STTUS_CODE" />
+
+		<result column="GOODS_NM" property="GOODS_NM" />
+		<result column="GOODS_CHARGE_PT" property="GOODS_CHARGE_PT" />
+		<result column="PRTNR_ID" property="PRTNR_ID" />
+		<result column="USED_EZWEL_POINT" property="USED_EZWEL_POINT" />
+		<result column="TIMESTAMP" property="TIMESTAMP" />
+		<result column="NEXT_DLVY_DE" property="NEXT_DLVY_DE" />
+
+		<result column="DLVY_RESULT" property="DLVY_RESULT" />
+	</resultMap>
+
+	<update id="updateSTN_ORDER_SETLE" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER_SETLE
+
+		UPDATE
+			STN_ORDER_SETLE
+		SET
+			SETLE_POINT = #{SETLE_POINT},
+			SETLE_CARD_AMOUNT = #{SETLE_CARD_AMOUNT},
+			SETLE_TOT_AMOUNT = #{SETLE_TOT_AMOUNT},
+			SETLE_STTUS_CODE = #{SETLE_STTUS_CODE},
+			SETLE_RESULT_CODE = #{SETLE_RESULT_CODE},
+			SETLE_RESULT_MSSAGE = #{SETLE_RESULT_MSSAGE},
+			EZW_SETLE_CONFM_NO = #{EZW_SETLE_CONFM_NO},
+			INI_SETLE_CONFM_NO = #{INI_SETLE_CONFM_NO},
+			SETLE_RESULT_TY_CODE = #{SETLE_RESULT_TY_CODE},
+			SETLE_PNTTM = NOW()
+		WHERE
+			ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+	</update>
+
+	<update id="updateSTN_COUPON_FAIL" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		UPDATE
+			STN_GOODS_COUPON
+		SET
+			COUPON_STTUS_CODE = 'CANCL',
+		    LAST_UPDT_PNTTM = SYSDATE()
+		WHERE
+			COUPON_NO = #{COUPON_NO}
+	</update>
+
+	<update id="updateEXCCLC_PRARNDE" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateEXCCLC_PRARNDE
+
+		<!-- UPDATE STN_ORDER_SETLE a INNER JOIN (
+		SELECT
+			os.ORDER_SETLE_NO, CASE c.STDE_SE_CODE
+			WHEN 'STDE04' THEN CONCAT(DATE_FORMAT(SETLE_PNTTM, '%Y%m'), 
+			DATE_FORMAT(LAST_DAY(os.SETLE_PNTTM),'%d'))
+			WHEN 'STDE05' THEN 
+			CASE 
+				WHEN DATE_FORMAT(SETLE_PNTTM, '%e') &lt;= 15 THEN DATE_FORMAT(SETLE_PNTTM, '%Y%m15')
+				ELSE CONCAT(DATE_FORMAT(SETLE_PNTTM, '%Y%m'), 
+				DATE_FORMAT(LAST_DAY(os.SETLE_PNTTM),'%d'))
+			END
+		END EXCCLC_PRARNDE
+		FROM STN_ORDER_SETLE os
+			JOIN STN_ORDER_DLVY od ON od.ORDER_SETLE_NO = os.ORDER_SETLE_NO
+			JOIN STN_ORDER o ON o.ORDER_NO = od.ORDER_NO
+			JOIN STN_GOODS g ON g.GOODS_ID = o.GOODS_ID
+			JOIN STN_PRTNR_CMPNY_MAPNG pcm ON pcm.PCMAPNG_ID = g.PCMAPNG_ID
+			JOIN STN_CMPNY c ON c.CMPNY_ID = pcm.CMPNY_ID
+		WHERE os.SETLE_STTUS_CODE = 'S'
+		AND os.ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+		GROUP BY os.ORDER_SETLE_NO
+		) b ON b.ORDER_SETLE_NO = b.ORDER_SETLE_NO
+		SET
+			a.EXCCLC_PRARNDE = b.EXCCLC_PRARNDE
+		WHERE 
+			a.ORDER_SETLE_NO = #{ORDER_SETLE_NO} -->
+
+		UPDATE STN_ORDER_SETLE a INNER JOIN (
+		SELECT
+		os.ORDER_SETLE_NO
+		,CASE c.STDE_SE_CODE
+		WHEN 'STDE04' THEN CONCAT(DATE_FORMAT(SETLE_PNTTM + interval 1 month, '%Y%m'), DATE_FORMAT(LAST_DAY(os.SETLE_PNTTM + interval 1 month),'%d'))
+		WHEN 'STDE05' THEN
+		CASE WHEN DATE_FORMAT(SETLE_PNTTM, '%e') &lt;= 15 THEN
+		CONCAT(DATE_FORMAT(SETLE_PNTTM , '%Y%m'), DATE_FORMAT(LAST_DAY(os.SETLE_PNTTM ),'%d'))
+		ELSE
+		DATE_FORMAT((LAST_DAY(SETLE_PNTTM - interval 1 month) + interval 1 DAY) + interval 1 MONTH + interval 2 WEEK
+		+ interval (2 - DAYOFWEEK((LAST_DAY(SETLE_PNTTM - interval 1 month) + interval 1 DAY) + interval 1 MONTH + interval 1 WEEK)) + 1 day,'%Y%m%d')
+		END
+		END EXCCLC_PRARNDE
+		FROM STN_ORDER_SETLE os
+		JOIN STN_ORDER_DLVY od ON od.ORDER_SETLE_NO = os.ORDER_SETLE_NO
+		JOIN STN_ORDER o ON o.ORDER_NO = od.ORDER_NO
+		JOIN STN_GOODS g ON g.GOODS_ID = o.GOODS_ID
+		JOIN STN_PRTNR_CMPNY_MAPNG pcm ON pcm.PCMAPNG_ID = g.PCMAPNG_ID
+		JOIN STN_CMPNY c ON c.CMPNY_ID = pcm.CMPNY_ID
+		WHERE os.SETLE_STTUS_CODE = 'S'
+		AND os.ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+		GROUP BY os.ORDER_SETLE_NO
+		) b ON b.ORDER_SETLE_NO = b.ORDER_SETLE_NO
+		SET
+		a.EXCCLC_PRARNDE = b.EXCCLC_PRARNDE
+		WHERE a.ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+
+	</update>
+
+	<update id="updateSTN_ORDER" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER
+
+		UPDATE
+			STN_ORDER
+		SET
+			NOW_ODR = #{ORDER_ODR},
+			NEXT_SETLEDE = #{SETLE_PRARNDE},
+			ORDER_PNTTM = NOW(),
+			LAST_UPDT_PNTTM = NOW()
+		WHERE
+			ORDER_NO = #{ORDER_NO}
+	</update>
+
+	<update id="updateSTN_ORDER_DLVY" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER_DLVY
+
+		UPDATE
+			STN_ORDER_DLVY
+		SET
+			ORDER_REQ_STTUS_CODE = 'O',
+			LAST_UPDT_PNTTM = NOW()
+		WHERE
+			ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+	</update>
+
+	<insert id="insertNextSTN_ORDER_SETLE" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- insertNextSTN_ORDER_SETLE
+
+		INSERT INTO
+			STN_ORDER_SETLE
+			(
+				SETLE_TY_CODE,
+				SETLE_STTUS_CODE,
+				EZW_SETLE_CONFM_NO,
+				INI_SETLE_CONFM_NO,
+				SETLE_PRARNDE,
+				TEMP_KEY,
+				USE_AT
+			)
+			VALUES
+			(
+				#{SETLE_TY_CODE},
+				#{SETLE_STTUS_CODE},
+				'N',
+				'N',
+				#{SETLE_PRARNDE},
+				#{TEMP_KEY},
+				'Y'
+			)
+	</insert>
+
+	<insert id="insertNextSTN_ORDER_DLVY" parameterType="modoo.ext.module.payment.vo.ModooPayVO" statementType="CALLABLE">
+		-- insertNextSTN_ORDER_DLVY
+
+		INSERT INTO STN_ORDER_DLVY (
+			ORDER_NO
+		   ,ORDER_SETLE_NO
+		   ,ORDER_KND_CODE
+		   ,SBSCRPT_CYCLE_SE_CODE
+		   ,SBSCRPT_WEEK_CYCLE
+		   ,SBSCRPT_DLVY_WD
+		   ,SBSCRPT_MT_CYCLE
+		   ,SBSCRPT_DLVY_DAY
+		   ,ORDER_ODR
+		   ,ORDER_CO
+		   ,SLE_AMOUNT
+		   ,SETLE_AMOUNT
+		   ,DLVY_AMOUNT
+		   ,DLVY_USER_NM
+		   ,TELNO
+		   ,DLVY_ZIP
+		   ,DLVY_ADRES
+		   ,DLVY_ADRES_DETAIL
+		   ,DLVY_MSSAGE
+		   ,DLVY_STTUS_CODE
+		   ,HDRY_ID
+		   ,HDRY_DLVY_DE
+		   ,INVC_NO
+		   ,REGIST_PNTTM
+		   ,ORDER_REQ_STTUS_CODE
+		   ,DSCNT_AMOUNT
+		   ,ORDER_INFO
+		)
+		SELECT
+			#{ORDER_NO}
+			 ,#{ORDER_SETLE_NO}
+			 ,o.ORDER_KND_CODE
+			 ,o.SBSCRPT_CYCLE_SE_CODE
+			 ,o.SBSCRPT_WEEK_CYCLE
+			 ,o.SBSCRPT_DLVY_WD
+			 ,o.SBSCRPT_MT_CYCLE
+			 ,o.SBSCRPT_DLVY_DAY
+			 ,o.NOW_ODR
+			 ,o.ORDER_CO
+			 ,o.TOT_AMOUNT
+			 ,o.TOT_AMOUNT-IFNULL(o.DSCNT_AMOUNT,0)
+			 ,o.DLVY_AMOUNT
+			 ,o.DLVY_USER_NM
+			 ,o.TELNO
+			 ,o.DLVY_ZIP
+			 ,o.DLVY_ADRES
+			 ,o.DLVY_ADRES_DETAIL
+			 ,o.DLVY_MSSAGE
+			 ,'DLVY01'
+			 ,h.HDRY_ID
+			 ,NULL
+			 ,NULL
+			 ,SYSDATE()
+			 ,#{ORDER_REQ_STTUS_CODE}
+			 ,0
+			 ,#{ORDER_INFO}
+		FROM	STN_ORDER o
+					JOIN	STN_GOODS g ON g.GOODS_ID = o.GOODS_ID AND g.USE_AT = 'Y'
+					JOIN	STN_PRTNR_CMPNY_MAPNG  p ON p.PCMAPNG_ID = g.PCMAPNG_ID AND p.USE_AT ='Y'
+					JOIN	STN_CMPNY c ON c.CMPNY_ID = p.CMPNY_ID AND c.USE_AT = 'Y'
+					JOIN	STN_CMPNY_HDRY_MAPNG hm ON hm.CMPNY_ID = c.CMPNY_ID
+					JOIN	STN_HDRY_CMPNY h ON h.HDRY_ID = hm.HDRY_ID AND h.USE_AT = 'Y'
+		WHERE	o.ORDER_NO = #{ORDER_NO}
+		  AND	o.USE_AT = 'Y'
+			LIMIT 1
+
+
+	</insert>
+
+	<select id="selectNextSTN_ORDER_PK" parameterType="String" resultType="BigInteger">
+		-- selectNextSTN_ORDER_PK
+
+		SELECT
+			ORDER_SETLE_NO
+		FROM
+			STN_ORDER_SETLE
+		WHERE
+			TEMP_KEY = #{TEMP_KEY}
+	</select>
+
+	<select id="selectNextId" resultType="decimal">
+		-- selectNextId
+
+		SELECT
+			NEXT_ID
+		FROM
+			DTE_SEQ
+		WHERE
+			TABLE_NAME = 'STN_ORDER_SETLE'
+	</select>
+
+	<update id="updateDteSeq" parameterType="decimal">
+		-- updateDteSeq
+
+		UPDATE
+			DTE_SEQ
+		SET
+			NEXT_ID = #{nextId}
+		WHERE
+			TABLE_NAME = 'STN_ORDER_SETLE'
+	</update>
+
+	<update id="updateSTN_ORDER_FAIL" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER_FAIL
+
+		UPDATE
+			STN_ORDER
+		SET
+			ORDER_STTUS_CODE = 'ST04',
+			LAST_UPDT_PNTTM = NOW()
+		WHERE
+			ORDER_NO = #{ORDER_NO}
+
+	</update>
+
+	<update id="updateSTN_ORDER_DLVY_FAIL" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER_DLVY_FAIL
+
+		UPDATE
+			STN_ORDER_DLVY
+		SET
+			ORDER_REQ_STTUS_CODE = 'T',
+			REQ_TY_CODE = 'T02',
+			LAST_UPDT_PNTTM = NOW()
+		WHERE
+			ORDER_NO = #{ORDER_NO}
+
+	</update>
+
+	<update id="updateSTN_ORDER_SETLE_FAIL" parameterType="modoo.ext.module.payment.vo.ModooPayVO">
+		-- updateSTN_ORDER_SETLE_FAIL
+
+		UPDATE
+			STN_ORDER_SETLE
+		SET
+			SETLE_STTUS_CODE = #{SETLE_STTUS_CODE},
+			SETLE_RESULT_CODE = #{SETLE_RESULT_CODE},
+			SETLE_RESULT_MSSAGE = #{SETLE_RESULT_MSSAGE},
+			EZW_SETLE_CONFM_NO = #{EZW_SETLE_CONFM_NO},
+			INI_SETLE_CONFM_NO = #{INI_SETLE_CONFM_NO},
+			SETLE_FAIL_CNT = #{SETLE_FAIL_CNT}
+		WHERE
+			ORDER_SETLE_NO = #{ORDER_SETLE_NO}
+	</update>
+
+</mapper>

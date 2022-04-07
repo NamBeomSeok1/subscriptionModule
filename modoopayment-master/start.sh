@@ -1,0 +1,1 @@
+java -jar ./modoopayment-2020.11.24b.jar --spring.config.name=application.properties --spring.config.location=classpath:/application.properties,file:./config/application.properties &

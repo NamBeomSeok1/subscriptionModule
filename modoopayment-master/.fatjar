@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Thu Oct 29 21:44:38 KST 2020
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=false
+onejar.checkbox=false
+jarname=target\\modoopayment-2020.10.29c.jar
+manifest.mergeall=false
+manifest.mainclass=modoo.ext.module.payment.ModoopaymentApplication
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=
