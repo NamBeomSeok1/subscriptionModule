@@ -285,6 +285,16 @@
 
 	</insert>
 
+	<select id="selectSuccessOrderCnt" parameterType="String" resultType="Integer">
+		SELECT COUNT(a.ORDER_DLVY_NO)
+		FROM 	STN_ORDER_DLVY a
+					JOIN	STN_ORDER b ON b.ORDER_NO = a.ORDER_NO AND b.USE_AT = 'Y'
+					JOIN	STN_ORDER_SETLE s ON s.ORDER_SETLE_NO = a.ORDER_SETLE_NO AND SETLE_STTUS_CODE = 'S'
+		WHERE a.ORDER_REQ_STTUS_CODE='O'
+		  AND b.ORDER_NO = #{ORDER_NO}
+
+	</select>
+
 	<select id="selectNextSTN_ORDER_PK" parameterType="String" resultType="BigInteger">
 		-- selectNextSTN_ORDER_PK
 
@@ -342,6 +352,8 @@
 			LAST_UPDT_PNTTM = NOW()
 		WHERE
 			ORDER_NO = #{ORDER_NO}
+		  AND ORDER_DLVY_NO = (SELECT MAX(ORDER_DLVY_NO) FROM STN_ORDER_DLVY WHERE ORDER_NO = #{ORDER_NO})
+
 
 	</update>
 

@@ -322,7 +322,10 @@ public class RegularPayJobConfig {
     			 	
     			 	+ "g.CHARGER_TELNO,"
 
-    			 	+ "gc.COUPON_NO "
+    			 	+ "gc.COUPON_NO,"
+    			 	+ "gc.COUPON_VALID_PD,"
+    			 	+ "gc.COUPON_PD_TY,"
+					+ " CASE WHEN DATE_FORMAT(gc.COUPON_END_PNTTM , '%Y%m%d') < DATE_FORMAT(NOW(),'%Y%m%d') THEN 'Y' ELSE 'N' END AS COUPON_DT_END_AT "
    		 	 	+ "FROM "
    		 	 		+ "STN_ORDER_SETLE AS a "
    		 	 		+ "JOIN STN_ORDER_DLVY AS f "
@@ -373,7 +376,10 @@ public class RegularPayJobConfig {
 
 					+ "g.CHARGER_TELNO,"
 
-					+ "gc.COUPON_NO "
+					+ "gc.COUPON_NO,"
+					+ "gc.COUPON_VALID_PD,"
+					+ "gc.COUPON_PD_TY,"
+					+ " CASE WHEN DATE_FORMAT(gc.COUPON_END_PNTTM , '%Y%m%d') < DATE_FORMAT(NOW(),'%Y%m%d') THEN 'Y' ELSE 'N' END AS COUPON_DT_END_AT "
    		 	 	+ "FROM "
    		 	 		+ "STN_ORDER_SETLE AS a "
    		 	 		+ "JOIN STN_ORDER_DLVY AS f "

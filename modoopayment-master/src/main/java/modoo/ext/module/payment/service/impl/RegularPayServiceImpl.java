@@ -922,6 +922,26 @@ public class RegularPayServiceImpl implements RegularPayService{
 				LOGGER.info("[ "+mvo.getORDER_NO() + " : mvo.setSETLE_RESULT_CODE()]  : {} , {}", mvo.getSETLE_RESULT_CODE(),mvo.getSETLE_RESULT_MSSAGE());
 				return mvo;
 			}
+
+			Integer successCnt = payDao.selectSuccessOrderCnt(mvo.getORDER_NO());
+			//수강권 사용일이 종료일자를 넘었으면 구독해지
+			if("Y".equals(mvo.getCOUPON_DT_END_AT()) ){
+				mvo.setSETLE_STTUS_CODE("C");
+				mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R999);
+				mvo.setSETLE_RESULT_MSSAGE("수강권 종료일자 초과");
+				LOGGER.info("[ "+mvo.getORDER_NO() + " : mvo.setSETLE_RESULT_CODE()]  : {} , {}", mvo.getORDER_NO(),mvo.getSETLE_RESULT_MSSAGE());
+				return mvo;
+			}
+			//수강권 사용유효횟수를 넘었으면 구독해지
+			LOGGER.info("SuccessCnt : {}, COUPON_VALID_PD :{}" ,successCnt,mvo.getCOUPON_VALID_PD()==null?0:mvo.getCOUPON_VALID_PD());
+			if(mvo.getCOUPON_VALID_PD()!=null && successCnt >= Integer.valueOf(mvo.getCOUPON_VALID_PD())){
+				mvo.setSETLE_STTUS_CODE("C");
+				mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R999);
+				mvo.setSETLE_RESULT_MSSAGE("수강권 종료횟수 초과");
+				LOGGER.info("[ "+mvo.getORDER_NO() + " : mvo.setSETLE_RESULT_CODE()]  : {} , {} , VALID_PD : {}", mvo.getORDER_NO(),mvo.getSETLE_RESULT_MSSAGE(),mvo.getCOUPON_VALID_PD());
+				return mvo;
+			}
+
 			
 			// 주문이 취소접수중이면 다시 철회할 수도 있기때문에 다음 결제날 세팅후 넘어간다.
 			if(mvo.getORDER_STTUS_CODE().equalsIgnoreCase("ST01")) {
@@ -1245,6 +1265,30 @@ public class RegularPayServiceImpl implements RegularPayService{
 					
 					LOGGER.info("[ " + mvo.getORDER_NO() + " ] doWritePayInfo canceled : {}", mvo.getORDER_STTUS_CODE());
 					
+					continue;
+				}
+
+
+				Integer successCnt = payDao.selectSuccessOrderCnt(mvo.getORDER_NO());
+				//수강권 상품 종료 날짜가 지나거나 결제 횟수가 쿠폰유효날짜수 보다 같거나 많을때 자동으로 쿠폰 구독해지
+				if((mvo.getCOUPON_DT_END_AT() != null
+						&& "Y".equals(mvo.getCOUPON_DT_END_AT()))
+					|| (mvo.getCOUPON_VALID_PD()!=null
+						&& successCnt >= Integer.valueOf(mvo.getCOUPON_VALID_PD()))){
+					mvo.setORDER_STTUS_CODE("ST04");
+					mvo.setORDER_REQ_STTUS_CODE("T");
+					mvo.setSETLE_STTUS_CODE("T");
+					mvo.setREQ_TY_CODE("T02");
+
+					payDao.updateSTN_ORDER_FAIL(mvo);
+					payDao.updateSTN_ORDER_DLVY_FAIL(mvo);
+					payDao.updateSTN_ORDER_SETLE_FAIL(mvo);
+					//수강권 쿠폰 해지
+					if(mvo.getVCH_CODE()!=null||!StringUtils.isEmpty(mvo.getVCH_CODE())){
+						payDao.updateSTN_COUPON_FAIL(mvo);
+					}
+					LOGGER.info("[ " + mvo.getORDER_NO() + " ] couponEndDtUpdate couponNo: {}", mvo.getCOUPON_NO());
+
 					continue;
 				}
 				

@@ -58,6 +58,10 @@ public class ModooPayDAO {
 	public BigInteger selectNextSTN_ORDER_PK(String tempKey) {
 		return sqlSession.selectOne(NAMESPACE + "selectNextSTN_ORDER_PK", tempKey);
 	}
+
+	public Integer selectSuccessOrderCnt(String orderNo){
+		return sqlSession.selectOne(NAMESPACE + "selectSuccessOrderCnt", orderNo);
+	}
 	
 	public void updateDteSeq(BigInteger nextId) {
 		sqlSession.update(NAMESPACE + "updateDteSeq", nextId);

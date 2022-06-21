@@ -222,6 +222,15 @@ public class ModooPayVO{
 	// 쿠폰번호
 	private String COUPON_NO = null;
 
+	//종료 날짜 체크
+	private String COUPON_DT_END_AT = null;
+
+	//종료 날짜 체크
+	private String COUPON_VALID_PD = null;
+
+	//종료 날짜 체크
+	private String COUPON_PD_TY = null;
+
 
 
 	/**
