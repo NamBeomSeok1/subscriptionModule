@@ -934,7 +934,9 @@ public class RegularPayServiceImpl implements RegularPayService{
 			}
 			//수강권 사용유효횟수를 넘었으면 구독해지
 			LOGGER.info("SuccessCnt : {}, COUPON_VALID_PD :{}" ,successCnt,mvo.getCOUPON_VALID_PD()==null?0:mvo.getCOUPON_VALID_PD());
-			if(mvo.getCOUPON_VALID_PD()!=null && successCnt >= Integer.valueOf(mvo.getCOUPON_VALID_PD())){
+			if(mvo.getCOUPON_VALID_PD()!=null
+					&& !StringUtils.isEmpty(mvo.getCOUPON_VALID_PD())
+					&& successCnt >= Integer.valueOf(mvo.getCOUPON_VALID_PD())){
 				mvo.setSETLE_STTUS_CODE("C");
 				mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R999);
 				mvo.setSETLE_RESULT_MSSAGE("수강권 종료횟수 초과");
@@ -1273,7 +1275,7 @@ public class RegularPayServiceImpl implements RegularPayService{
 				//수강권 상품 종료 날짜가 지나거나 결제 횟수가 쿠폰유효날짜수 보다 같거나 많을때 자동으로 쿠폰 구독해지
 				if((mvo.getCOUPON_DT_END_AT() != null
 						&& "Y".equals(mvo.getCOUPON_DT_END_AT()))
-					|| (mvo.getCOUPON_VALID_PD()!=null
+					|| (!StringUtils.isEmpty(mvo.getCOUPON_VALID_PD())
 						&& successCnt >= Integer.valueOf(mvo.getCOUPON_VALID_PD()))){
 					mvo.setORDER_STTUS_CODE("ST04");
 					mvo.setORDER_REQ_STTUS_CODE("T");
