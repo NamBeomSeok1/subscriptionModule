@@ -374,4 +374,31 @@
 			ORDER_SETLE_NO = #{ORDER_SETLE_NO}
 	</update>
 
+	<insert id="insertDTH_ORDER_ERROR_LOG" parameterType="modoo.ext.module.payment.vo.LogVO">
+		-- insertNextSTN_ORDER_SETLE
+		INSERT INTO
+			DTH_ORDER_ERROR_LOG
+		(
+			ORDER_GROUP_NO,
+			ORDER_NO,
+			ORDRR_ID,
+			ORDRR_NM,
+			ERROR_CODE,
+			ORDER_TURN,
+			CREAT_DT,
+			ERROR_MSG
+		)
+		VALUES
+		(
+			#{orderGroupNo},
+			#{orderNo},
+			#{ordrrId},
+			#{ordrrNm},
+			#{errorCode},
+			#{orderTurn},
+			SYSDATE(),
+			#{errorMsg}
+		)
+	</insert>
+
 </mapper>

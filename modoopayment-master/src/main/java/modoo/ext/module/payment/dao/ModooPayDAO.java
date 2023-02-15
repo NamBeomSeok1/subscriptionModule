@@ -3,6 +3,7 @@ package modoo.ext.module.payment.dao;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import modoo.ext.module.payment.vo.LogVO;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,5 +82,9 @@ public class ModooPayDAO {
 	
 	public void updateSTN_ORDER_SETLE_FAIL(ModooPayVO mvo) {
 		sqlSession.update(NAMESPACE + "updateSTN_ORDER_SETLE_FAIL", mvo);
+	}
+
+	public void insertDTH_ORDER_ERROR_LOG(LogVO vo) {
+		sqlSession.insert(NAMESPACE + "insertDTH_ORDER_ERROR_LOG", vo);
 	}
 }

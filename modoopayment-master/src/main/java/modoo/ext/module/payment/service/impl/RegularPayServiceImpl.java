@@ -17,6 +17,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.java.Log;
+import modoo.ext.module.payment.vo.LogVO;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -1237,7 +1239,6 @@ public class RegularPayServiceImpl implements RegularPayService{
 	@Transactional
 	public void doWritePayInfo(List<? extends ModooPayVO> voList) {
 		LOGGER.info("doWritePayInfo : {}", voList.size());
-		
 		// 비즈톡 결제성공맵 (고객용)
 		Map<String, Object> bizTalkMapOrderOkCustom = new HashMap<String, Object>();
 		bizTalkMapOrderOkCustom.put("tmplatCode", BIZTALK_TAMPLATE_002);
@@ -1285,6 +1286,11 @@ public class RegularPayServiceImpl implements RegularPayService{
 					payDao.updateSTN_ORDER_FAIL(mvo);
 					payDao.updateSTN_ORDER_DLVY_FAIL(mvo);
 					payDao.updateSTN_ORDER_SETLE_FAIL(mvo);
+					this.insertFailLog(mvo);
+
+					//결제 실패 로그
+
+
 					//수강권 쿠폰 해지
 					if(mvo.getVCH_CODE()!=null||!StringUtils.isEmpty(mvo.getVCH_CODE())){
 						payDao.updateSTN_COUPON_FAIL(mvo);
@@ -1363,7 +1369,8 @@ public class RegularPayServiceImpl implements RegularPayService{
 					}	
 					
 					// 결제이력 테이블 결제실패 업데이트
-					payDao.updateSTN_ORDER_SETLE_FAIL(mvo);					
+					payDao.updateSTN_ORDER_SETLE_FAIL(mvo);
+					this.insertFailLog(mvo);
 					
 					continue;
 				}			
@@ -1513,6 +1520,27 @@ public class RegularPayServiceImpl implements RegularPayService{
 		} catch(Exception e) {
 			LOGGER.error("sendBizTalk ERROR : {}", e);
 		}
+	}
+
+	private void insertFailLog(ModooPayVO mvo) {
+		LOGGER.info("[ " + mvo.getORDER_NO() + " ] INSERT ERROR LOG : {} {}", mvo.getORDRR_NM(),mvo.getSETLE_RESULT_MSSAGE());
+		LogVO logVO = new LogVO();
+
+		try {
+			logVO.setOrderNo(mvo.getORDER_NO());
+			logVO.setOrderGroupNo(String.valueOf(mvo.getORDER_GROUP_NO()));
+			logVO.setOrdrrId(mvo.getORDRR_ID());
+			logVO.setOrdrrNm(mvo.getORDRR_NM());
+			logVO.setOrderTurn(mvo.getORDER_ODR());
+			logVO.setErrorCode((StringUtils.hasText(mvo.getSETLE_RESULT_CODE())?mvo.getSETLE_RESULT_CODE():"ERROR"));
+			logVO.setErrorMsg((StringUtils.hasText(mvo.getSETLE_RESULT_MSSAGE())?mvo.getSETLE_RESULT_MSSAGE():"이니시스 정기결제 에러"));
+
+			payDao.insertDTH_ORDER_ERROR_LOG(logVO);
+
+		}catch (Exception e){
+			LOGGER.error("INERT ERROR LOG"+e.getMessage());
+		}
+
 	}
 	
 }
