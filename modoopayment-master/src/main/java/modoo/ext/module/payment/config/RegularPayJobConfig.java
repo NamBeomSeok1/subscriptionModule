@@ -347,9 +347,12 @@ public class RegularPayJobConfig {
    		 	 		+ "AND a.USE_AT = 'Y' " 
    		 	 		+ "AND b.USE_AT = 'Y' "
    		 	 		+ "AND e.USE_AT = 'Y' "
+   		 	 		+ "AND d.CLIENT_CD != 'NMBER'"
    		 	 		+ "AND b.ORDER_KND_CODE = 'SBS' "
    		 	 		+ "AND a.SETLE_STTUS_CODE IN('R','P') " 
-   		 	 		+ "AND DATE(DATE_FORMAT(a.SETLE_PRARNDE, '%Y%m%d')) = DATE(NOW()) ";
+   		 	 		+ "AND DATE(DATE_FORMAT(a.SETLE_PRARNDE, '%Y%m%d')) = DATE(NOW()) "
+					+ "GROUP BY a.ORDER_SETLE_NO";
+
     		break;
     	case "1" :
     		//결제 실패건 조회
@@ -401,9 +404,11 @@ public class RegularPayJobConfig {
    		 	 		+ "AND a.USE_AT = 'Y' " 
    		 	 		+ "AND b.USE_AT = 'Y' "
    		 	 		+ "AND e.USE_AT = 'Y' "
+					+ "AND d.CLIENT_CD != 'NMBER'"
    		 	 		+ "AND b.ORDER_KND_CODE = 'SBS' "
    		 	 		+ "AND a.SETLE_STTUS_CODE = 'F' " 
-   		 	 		+ "AND DATE(DATE_FORMAT(a.SETLE_PRARNDE, '%Y%m%d')) > DATE(NOW()) - 7";
+   		 	 		+ "AND DATE(DATE_FORMAT(a.SETLE_PRARNDE, '%Y%m%d')) > DATE(NOW()) - 7"
+					+ "GROUP BY a.ORDER_SETLE_NO";
     		break;
 		default :
 			break;
