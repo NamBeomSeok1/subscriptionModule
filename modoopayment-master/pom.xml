@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>modoo.ext.module</groupId>
 	<artifactId>modoopayment</artifactId>
-	<version>2022.03.11a</version>
+	<version>2024.11.04a</version>
 	<name>modoopayment</name>
 	<description>regular payment module for modooshop</description>
 	<packaging>jar</packaging>
@@ -130,13 +130,13 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>Ezwelcrypto</groupId>
 			<artifactId>Ezwelcrypto1.7</artifactId>
 			<version>1.7</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/Ezwelcrypto1.7.jar</systemPath>
-		</dependency>
+		</dependency>-->
 
 		<!-- <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

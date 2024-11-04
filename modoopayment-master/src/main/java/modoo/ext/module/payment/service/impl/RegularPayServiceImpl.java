@@ -503,12 +503,12 @@ public class RegularPayServiceImpl implements RegularPayService{
 	 */
 	@Override
 	public ModooPayVO doEzwelPoint(ModooPayVO mvo) {
-		LOGGER.info("doEzwelPoint : [ {} ], [ {} ]", mvo.getORDER_NO(), mvo.getORDRR_NM());
-		
+		/*LOGGER.info("doEzwelPoint : [ {} ], [ {} ]", mvo.getORDER_NO(), mvo.getORDRR_NM());
+
 		String enc_cspCd = "";
 		String enc_clientCd = "";
 		String enc_userKey = "";
-		
+
 		try {
 			//공통 파라미터
 			enc_cspCd = encryptUtil.encodeParamBase64(ezwelCspCd);
@@ -519,113 +519,113 @@ public class RegularPayServiceImpl implements RegularPayService{
 			mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R010);
 			mvo.setSETLE_RESULT_MSSAGE("Ezwel ERROR : userinfo is invalid");
 			return mvo;
-		}	 
-		
+		}
+
 		//이지웰 포인트 사용여부 확인 및 조회 (결제종류를 카드로 선택해놨다면 이 과정을 건너뛴다)
 		String ezwelPoint = "0";
-		
+
 		if(mvo.getPOINT_YN() != null && mvo.getPOINT_YN().equalsIgnoreCase("Y")
 				&& mvo.getSETLE_TY_CODE() != null && (mvo.getSETLE_TY_CODE().equalsIgnoreCase("EZP")||mvo.getSETLE_TY_CODE().equalsIgnoreCase("EZCD"))) {
-			
+
 		    String enc_110_command = encryptUtil.encodeParamForEzwel("110");
-		    
-			try {				
+
+			try {
 				HttpPost httpPost = new HttpPost(ezwelUrl);
 				httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-						    
-			    List<NameValuePair> postParams = new ArrayList<NameValuePair>();			
+
+			    List<NameValuePair> postParams = new ArrayList<NameValuePair>();
 				postParams.add(new BasicNameValuePair("cspCd", enc_cspCd));
 				postParams.add(new BasicNameValuePair("command", enc_110_command));
-				postParams.add(new BasicNameValuePair("clientCd", enc_clientCd));			
+				postParams.add(new BasicNameValuePair("clientCd", enc_clientCd));
 				postParams.add(new BasicNameValuePair("userKey", enc_userKey));
 
 				LOGGER.info("[ " + mvo.getORDER_NO() + " ] userKey : {}", enc_userKey);
-				
-				org.apache.http.HttpEntity postEntity = new UrlEncodedFormEntity(postParams, "UTF-8");			 
+
+				org.apache.http.HttpEntity postEntity = new UrlEncodedFormEntity(postParams, "UTF-8");
 				httpPost.setEntity(postEntity);
-				 
+
 				CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-				CloseableHttpResponse response = httpClient.execute(httpPost);			 
-				
+				CloseableHttpResponse response = httpClient.execute(httpPost);
+
 		        int statusCode = response.getStatusLine().getStatusCode();
-		        
+
 		        // 이과정에서 오류나면 회원의 상태가 정상적이지 않다는 의미.
-			    if(statusCode == 200){			    	
+			    if(statusCode == 200){
 			    	ResponseHandler<String> handler = new BasicResponseHandler();
 			    	ezwelPoint = handler.handleResponse(response);
-			    	
+
 			    	LOGGER.info("pointPayWithEzwel result ezwelPoint response : {}" , ezwelPoint);
-			    	
+
 			    	// 복호화
 			    	ezwelPoint = encryptUtil.decodeResultForEzwel(ezwelPoint.trim()).trim();
-			    	
+
 			    	if(TextUtil.isEmpty(ezwelPoint)) {
 			    		mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R020);
 			    		return mvo;
 			    	}
-			    	
+
 			    	// 숫자만 추출한다.
 			    	ezwelPoint = ezwelPoint.replaceAll("[^0-9]","");
-			    	
+
 			    	if(TextUtil.isEmpty(ezwelPoint)) {
 			    		mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R020);
 			    		return mvo;
 			    	}
-			    				    	
+
 			    	LOGGER.info("[ " + mvo.getORDER_NO() + " ] pointPayWithEzwel result ezwelPoint : {}", ezwelPoint);
-			    	
+
 			    }else{
 			    	mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R020);
 			    	return mvo;
 			    }
-			    
+
 			} catch(Exception e) {
-				LOGGER.error("[ " + mvo.getORDER_NO() + " ] pointPayWithEzwel ERROR 110 : {}", e);		
+				LOGGER.error("[ " + mvo.getORDER_NO() + " ] pointPayWithEzwel ERROR 110 : {}", e);
 				mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R020);
 		    	return mvo;
 			}
-		} 
-				
+		}
+
 		// 실제로 이지웰 포인트를 쓸 수 있는지 여부 확인 (추후 이니시스 카드 결제할지 여부에 사용)
 		if(ezwelPoint == null || ezwelPoint.isEmpty()) {
 			ezwelPoint = "0";
-		}		
-		
+		}
+
 		// 결제금액
 		BigInteger totAmount = mvo.getSETLE_TOT_AMOUNT();
-		
+
 		// 가용가능한 이지웰 포인트
 		BigInteger useablePoint = new BigInteger(ezwelPoint);
-		
+
 		// 사용할 이지웰 포인트
 		BigInteger useEzwelPoint = BigInteger.ZERO;
-		
-		// 카드결제할 금액 (결제금액 - 이지웰 포인트)		
+
+		// 카드결제할 금액 (결제금액 - 이지웰 포인트)
 		BigInteger restAmount = BigInteger.ZERO;
-			
+
 		// 무료상품일경우 0원으로 결제
 		if(!mvo.getSETLE_RESULT_TY_CODE().equalsIgnoreCase("FREE")) {
 			//이지웰 포인트가 결제금액 이상이면 이니시스 결제를 진행할 필요 없다.
-			if(totAmount.compareTo(useablePoint) <= 0) {			
+			if(totAmount.compareTo(useablePoint) <= 0) {
 				// 실제 결제 상태 기록
-				mvo.setSETLE_RESULT_TY_CODE("EZP"); 
+				mvo.setSETLE_RESULT_TY_CODE("EZP");
 				useEzwelPoint = totAmount;
 			} else {
 				// 이지웰 포인트가 0 이라면 이니시스(카드)로만 결제한다.
 				if(useablePoint.equals(BigInteger.ZERO)) {
-					mvo.setSETLE_RESULT_TY_CODE("CARD"); 
+					mvo.setSETLE_RESULT_TY_CODE("CARD");
 				} else {
 					// 복합결제가 되었을경우
-					mvo.setSETLE_RESULT_TY_CODE("EZCD"); 
+					mvo.setSETLE_RESULT_TY_CODE("EZCD");
 				}
 				useEzwelPoint = useablePoint;
 				restAmount = totAmount.subtract(useEzwelPoint);
 			}
 		}
-				
+
 		mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R000);
 		mvo.setSETLE_POINT(useEzwelPoint);
-		mvo.setSETLE_CARD_AMOUNT(restAmount);
+		mvo.setSETLE_CARD_AMOUNT(restAmount);*/
 		
 		return mvo;
 	}
@@ -638,7 +638,7 @@ public class RegularPayServiceImpl implements RegularPayService{
 	public ModooPayVO doEzwelPay(ModooPayVO mvo) {
 		LOGGER.info("doEzwelPay : [ {} ], [ {} ]", mvo.getORDER_NO(), mvo.getORDRR_NM());
 		
-		String enc_cspCd = "";
+		/*String enc_cspCd = "";
 		String enc_clientCd = "";
 		String enc_userKey = "";
 		
@@ -872,7 +872,7 @@ public class RegularPayServiceImpl implements RegularPayService{
 			mvo.setSETLE_RESULT_CODE(PayException.ERR_CODE_R019);
 	    	mvo.setSETLE_RESULT_MSSAGE("Ezwel 112 command error : ezwelPayResult is invalid");
 	    	return mvo;
-		}		
+		}		*/
 				
 		return mvo;
 	}
@@ -1033,7 +1033,7 @@ public class RegularPayServiceImpl implements RegularPayService{
 				mvo.setINICIS_PAY_RESULT(1);
 			}
 			
-			// 이지웰 결제
+			// 이지웰 결제 - 2024-11-04 현재 사용x
 			mvo = doEzwelPay(mvo);	
 
 		}else if(BTB_EXANADU.equals(mvo.getPRTNR_ID())){
