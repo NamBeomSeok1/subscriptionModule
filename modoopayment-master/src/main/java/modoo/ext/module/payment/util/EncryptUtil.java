@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import ezwelcrypto.EzwelCrypto;
+/*import ezwelcrypto.EzwelCrypto;*/
 
 @Component
 public class EncryptUtil {
@@ -78,25 +78,25 @@ public class EncryptUtil {
 	}
 	
 	
-	public String encodeParamForEzwel(String strEncode) {
+	/*public String encodeParamForEzwel(String strEncode) {
 		String resultStr = null;
 		try {
-			EzwelCrypto ezwelCrypto = new EzwelCrypto();			
+			EzwelCrypto ezwelCrypto = new EzwelCrypto();
 			Encoder encoder = Base64.getEncoder();
 
-			if(strEncode == null || strEncode.isEmpty()){	
+			if(strEncode == null || strEncode.isEmpty()){
 				strEncode  = "0";
 			}
-			
+
 			resultStr = new String(encoder.encode(ezwelCrypto.encrypt(strEncode, ezwelPublicKey.getBytes(), "UTF-8")));
 		}catch(Exception e) {
 			LOGGER.error("EncryptUtil - encodeEzwel ERROR : {}", e);
 		}
 		return resultStr;
-	}
+	}*/
 	
 	
-	public String decodeResultForEzwel(String strDecode) {
+	/*public String decodeResultForEzwel(String strDecode) {
 		String resultStr = null;
 		try {
 			EzwelCrypto ezwelCrypto = new EzwelCrypto();
@@ -111,7 +111,7 @@ public class EncryptUtil {
 			return null;
 		}
 		return resultStr;
-	}
+	}*/
 		
 	
 	public String encodeParamBase64(String strEncode) {
