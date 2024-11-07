@@ -45,6 +45,7 @@ public class EncryptUtil {
 			return null;
 		}
 
+
 		
 //		String hashval = null;
 //		
