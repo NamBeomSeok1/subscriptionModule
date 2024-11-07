@@ -44,6 +44,7 @@ public class EncryptUtil {
 		if(src == null || src.isEmpty()) {
 			return null;
 		}
+
 		
 //		String hashval = null;
 //		
